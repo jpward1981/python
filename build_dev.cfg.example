@@ -1,0 +1,22 @@
+[credentials]
+#Credentials section of the configuration file, specify the username
+#and password or api key for your account, if USE_KEYRING is defined
+#password will be pulled from the keyring not the config file
+#   current options:
+#       username='username' 
+#       apikey='apikey'
+#       password='password'
+
+username='USE_KEYRING'
+apikey='USE_KEYRING'
+
+[environment]
+# Environment variables
+# Currently set to RackSpace OpenCloud Environment
+#   current options:
+#       auth_url='https://identity.api.rackspacecloud.com'
+#       suffix="_dev" This defines the suffix appended to the name 
+#                       of the server that is build in the environment 
+auth_url='https://identity.api.rackspacecloud.com'
+suffix="_dev"
+
