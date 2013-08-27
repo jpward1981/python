@@ -21,9 +21,42 @@ class store_destroy(argparse.Action):
 
 class configuration():
     def __init__(self, config):
-        config = ConfigParser.ConfigParser()
+        config = ConfigParser.SafeConfigParser()
         config.readfp(open('build_dev.cfg'))
-        
+        # Read User Credentials
+        try:
+            self.username = config.get("credentials", "username")
+        except ConfigParser.NoOptionError:
+            print "Unable to find username defined in configuration file"
+            print "Please correct username field under the \"credentials\" option"
+            return False
+
+        try:
+            self.password = config.get("credentials", "password")
+        except ConfigParser.NoOptionError:
+            self.password = ""
+
+        try:
+            self.apikey = config.get("credentials", "apikey")
+        except ConfigParser.NoOptionError:
+            self.apikey = ""
+
+        if self.apikey == "" and self.password == "":
+            print "You need to provide either an account password"
+            print "or an ApiKey for your user account"
+            return False
+        # Since usercredentials could be stored in the keyring, check for
+        # USE_KEYRING in the variable
+        if self.username == "USE_KEYRING" or self.password == "USE_KEYRING" or self.apikey == "USE_KEYRING":
+            # Something needs a keyring variable, lets walk through them
+            import keyring
+
+            if self.username == "USE_KEYRING":
+                self.username = keyring.get_password('build_dev', 'username')
+                if self.username == 'None'
+                    print "Username not set in keyring"
+                    return 0
+
 
 if __name__ == '__main__':
     # Lets Parse some Arguments to see what we are doing
